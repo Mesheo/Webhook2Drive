@@ -1,12 +1,10 @@
-import os
-import os.path
-
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials 
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload
+import os
 
 def drive_uploader():
     print("[drive_uploder] - Iniciando comunicação com drive")
@@ -27,7 +25,7 @@ def drive_uploader():
             )
             creds = flow.run_local_server(port=0)
 
-        with open('token.json', 'w') as token:
+        with open('/tmp/token.json', 'w') as token:
             token.write(creds.to_json())
 
     try:

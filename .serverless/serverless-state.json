@@ -220,7 +220,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/webhook2drive/dev/1706051863589-2024-01-23T23:17:43.589Z/webhook2drive.zip"
+                "S3Key": "serverless/webhook2drive/dev/1706057441418-2024-01-24T00:50:41.418Z/webhook2drive.zip"
               },
               "Handler": "s_api.handler",
               "Runtime": "python3.10",
@@ -238,14 +238,14 @@
               "ApiLogGroup"
             ]
           },
-          "ApiLambdaVersion4E29c6PRFMAzgYCLqg8OvqFztoEzsL9tw2QwmNFdX3M": {
+          "ApiLambdaVersionEWNgaQTtMX1IWRVIiFOJTV1D21CLvRMcpe0WWAMnwk": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "ApiLambdaFunction"
               },
-              "CodeSha256": "oGvQ9WbSeXjy1itTG1vHCUwaXTHUE5JLIjqoph0IOLw="
+              "CodeSha256": "0BsU1MxUghjZMawT+q0YmMqLfmJk3uIv2MIs8gm+/qk="
             }
           },
           "HttpApi": {
@@ -380,7 +380,7 @@
           "ApiLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "ApiLambdaVersion4E29c6PRFMAzgYCLqg8OvqFztoEzsL9tw2QwmNFdX3M"
+              "Ref": "ApiLambdaVersionEWNgaQTtMX1IWRVIiFOJTV1D21CLvRMcpe0WWAMnwk"
             },
             "Export": {
               "Name": "sls-webhook2drive-dev-ApiLambdaFunctionQualifiedArn"
@@ -539,7 +539,7 @@
         "timeout": 6,
         "runtime": "python3.10",
         "vpc": {},
-        "versionLogicalId": "ApiLambdaVersion4E29c6PRFMAzgYCLqg8OvqFztoEzsL9tw2QwmNFdX3M"
+        "versionLogicalId": "ApiLambdaVersionEWNgaQTtMX1IWRVIiFOJTV1D21CLvRMcpe0WWAMnwk"
       }
     },
     "configValidationMode": "warn",
@@ -572,7 +572,7 @@
     "artifact": "/home/michel/PROJETOS/webhook2drive/.serverless/webhook2drive.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/webhook2drive/dev/1706051863589-2024-01-23T23:17:43.589Z",
+    "artifactDirectoryName": "serverless/webhook2drive/dev/1706057441418-2024-01-24T00:50:41.418Z",
     "artifact": "webhook2drive.zip"
   }
 }
