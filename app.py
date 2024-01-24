@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, make_response, request
-from drive_uploader import drive_uploader
-from json_converter import json_converter
+from google_api.google_drive import drive_uploader
+from data_conversion.json_converter import json2csv
 
 app = Flask(__name__)
 
@@ -12,17 +12,17 @@ def hello_from_root():
 def hello():
     return jsonify(message='Hello from path!')
 
-@app.route("/webhook", methods=["POST"])
-def webhook():
+@app.route("/webhook/<form_name>", methods=["POST"])
+def webhook(form_name):
     # Verifica se a requisição contém dados JSON
     if not request.is_json:
         return make_response(jsonify(error='Invalid JSON'), 400)
     
     data = request.get_json()
-    json_converter(data)
-    drive_uploader()
+    json2csv(data)
+    drive_uploader(form_name)
     
-    return jsonify(message=f'Webhook data received successfully. JSON data saved at GoogleDrive')
+    return jsonify(message=f'Webhook data received from {form_name} successfully. JSON data saved at GoogleDrive')
 
 
 @app.errorhandler(404)
