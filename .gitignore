@@ -1,5 +1,5 @@
 node_modules/
 .serverless/
-/package-lock.json
+package-lock.json/
 google_api/credentials.json
 google_api/token.json
