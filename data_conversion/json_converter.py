@@ -1,6 +1,7 @@
 import pandas as pd
 import json
 import os
+from datetime import datetime  
 
 def json2csv(data):
     # Salva os dados JSON em um arquivo dentro da pasta '/tmp'
@@ -17,6 +18,9 @@ def json2csv(data):
         data = json.load(json_file)
 
     print("[JSON_converter] - dados do JSON salvo: ", data)
+
+     # Adicionar a coluna "created_at" com a data atual ao dicionário
+    data['created_at'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     
     # Converter o dicionário para um DataFrame do Pandas
     df = pd.DataFrame(data, index=[0])
