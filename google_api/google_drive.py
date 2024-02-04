@@ -53,7 +53,7 @@ def merge_csv_files(original_file, new_file, merged_file):
 
     print(f"Arquivos CSV mesclados com sucesso. Arquivo salvo como '{merged_file}'.")
 
-def drive_uploader(form_name):
+def drive_uploader(form_name, csv_file_path):
     creds = authentication_process()
 
     target_folder_id = ''
@@ -102,7 +102,7 @@ def drive_uploader(form_name):
             download_path = "/tmp/download_form_file.csv"
 
             download_file(service, form_file_id, f'{form_name}.csv', download_path)
-            merge_csv_files("/tmp/output.csv", download_path, "/tmp/merged_output.csv")
+            merge_csv_files(csv_file_path, download_path, "/tmp/merged_output.csv")
 
              # Upload do novo arquivo mesclado
             media = MediaFileUpload("/tmp/merged_output.csv")
@@ -111,9 +111,9 @@ def drive_uploader(form_name):
                 media_body=media
             ).execute()
 
-            print("Arquivo atualizado com sucesso.")
+            print("[google_drive] - Arquivo atualizado com sucesso: ", request)
         else:
-            print(f"[google_drive] - Arquivo csv não encontrado na pasta, criando agora...")
+            print("[google_drive] - Arquivo csv não encontrado na pasta, criando agora...")
 
             # Arquivo não existe, cria um novo
             file_metadata = {

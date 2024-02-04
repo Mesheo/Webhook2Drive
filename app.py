@@ -19,8 +19,8 @@ def webhook(form_name):
         return make_response(jsonify(error='Invalid JSON'), 400)
     
     data = request.get_json()
-    json2csv(data)
-    drive_uploader(form_name)
+    csv_file_path = json2csv(data)
+    drive_uploader(form_name, csv_file_path)
     
     return jsonify(message=f'Webhook data received from {form_name} successfully. JSON data saved at GoogleDrive')
 
