@@ -8,6 +8,8 @@ import os
 import pandas as pd
 
 def authentication_process():
+    print("[google_drive] - Iniciando Autenticação com Google Cloud")
+
     SCOPES = ["https://www.googleapis.com/auth/drive"]
 
     creds = None
@@ -29,7 +31,6 @@ def authentication_process():
     return creds
 
 def download_file(service, file_id, file_name, destination_path):
-    
     request = service.files().get_media(fileId=file_id)
 
     with open(destination_path, "wb") as file:
@@ -40,7 +41,6 @@ def download_file(service, file_id, file_name, destination_path):
             print("Download %d%%." % int(status.progress() * 100))
     print(f"Arquivo '{file_name}' baixado com sucesso como '{destination_path}'.")
   
-
 def merge_csv_files(original_file, new_file, merged_file):
     df_original = pd.read_csv(original_file)
     df_new = pd.read_csv(new_file)
@@ -53,26 +53,26 @@ def merge_csv_files(original_file, new_file, merged_file):
 
     print(f"Arquivos CSV mesclados com sucesso. Arquivo salvo como '{merged_file}'.")
 
-
 def drive_uploader(form_name):
-    print("[drive_uploader] - Iniciando comunicação com drive")
     creds = authentication_process()
 
-    parent_folder_id = ''
+    target_folder_id = ''
     try:
         service = build("drive", "v3", credentials=creds)
-        #Listando as pastas
+
+        #Verificando se a pasta já existe
+        folder_name = 'VELVET_FORMS';
         response = service.files().list(
-            q="name='VELVET_FORMS' and mimeType='application/vnd.google-apps.folder'",
+            q=f"name='{folder_name}' and mimeType='application/vnd.google-apps.folder'",
             spaces='drive'
         ).execute()
-        print("AQUI as pastas: ", response)
-
+        print(f"[google_drive] - AQUI as pastas com nome {folder_name}: ", response['files'])
+ 
         #Criando a pasta se não existe
         if not response['files']:
-            print("[drive_uploader] - Criando pasta VELVET_FORMS...")
+            print(f"[google_drive] - Pasta {folder_name} não encontrada, criando agora...")
             file_metadata = {
-                "name": "VELVET_FORMS",
+                "name": folder_name,
                 "mimeType": "application/vnd/google-apps.folder"
             }
 
@@ -80,26 +80,26 @@ def drive_uploader(form_name):
                 body=file_metadata,
                 fields="id"
             ).execute()
+            target_folder_id = file.get('id')
 
-            parent_folder_id = file.get('id')
         else:
-            print("[drive_uploader] - Pasta VELVET_FORMS já existe!")
+            print(f"[google_drive] - Pasta {folder_name} já existe!")
+            target_folder_id = response['files'][0]['id']
+        print("Target Folder id: ", target_folder_id)
 
-            parent_folder_id = response['files'][0]['id']
-        print("Folder id: ", parent_folder_id)
-
-        #Verificando se ja tem um csv do formulario na pasta
+        #Verificando se ja tem um csv do formulario dentro pasta
         result = service.files().list(
-                q=f"name='{form_name}' and '{parent_folder_id}' in parents",
+                q=f"name='{form_name}' and '{target_folder_id}' in parents",
                 spaces="drive",
             ).execute()
 
         form_file = result.get("files", [])
-        print("Arquivo encontrado: ", form_file)
 
         if form_file:
+            print("[goole_drive] - Arquivo csv do formulario encontrado, inciando adição...", form_file)
+
             form_file_id = form_file[0]["id"]
-            download_path = "/tmp/baixado.csv"
+            download_path = "/tmp/download_form_file.csv"
 
             download_file(service, form_file_id, f'{form_name}.csv', download_path)
             merge_csv_files("/tmp/output.csv", download_path, "/tmp/merged_output.csv")
@@ -113,11 +113,12 @@ def drive_uploader(form_name):
 
             print("Arquivo atualizado com sucesso.")
         else:
-            print("Criando arquivos dentro da pasta folder")
+            print(f"[google_drive] - Arquivo csv não encontrado na pasta, criando agora...")
+
             # Arquivo não existe, cria um novo
             file_metadata = {
                 "name": form_name,
-                "parents": [parent_folder_id]
+                "parents": [target_folder_id]
             }
             
             media = MediaFileUpload(f'/tmp/output.csv')
@@ -126,7 +127,6 @@ def drive_uploader(form_name):
                 media_body=media,
                 fields="id"
             ).execute()
-            print("Deu certo, ", request)
 
     except HttpError as e:
         print("Error: ", str(e))
