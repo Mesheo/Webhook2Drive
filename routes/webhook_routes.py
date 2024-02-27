@@ -6,13 +6,12 @@ webhook_app = Blueprint("webhook_app", __name__)
 
 @webhook_app.route("/webhook/<form_name>", methods=["POST"])
 def webhook(form_name):
-    print("[Routes] - Recebido novas informações no formulário ", form_name)
     if not request.is_json:
         return make_response(jsonify(error='Invalid JSON'), 400)
     
     data = request.get_json()
 
-    print("[Routes] - O que foi recebido na request: ", data)
+    print(f'[Webhook app] {form_name} - dados recebidos na request: {data}')
     formatted_data = format_data(data, form_name)
     csv_file_path = json2csv(formatted_data)
     drive_uploader(form_name, csv_file_path)

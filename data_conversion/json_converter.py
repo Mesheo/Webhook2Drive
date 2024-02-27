@@ -29,7 +29,7 @@ def json2csv(data):
 
     # Imprimir o DataFrame
     df = pd.read_csv(csv_file_path)
-    print("[json_converte] - Conteúdo do CSV em dataframe: ", df)
+    print("[json_converter] - Conteúdo do CSV em dataframe: ", df)
 
     return csv_file_path
 

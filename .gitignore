@@ -4,3 +4,5 @@ package-lock.json/
 google_api/credentials.json
 google_api/token.json
 serverless_sdk/
+/.serverless
+.serverless

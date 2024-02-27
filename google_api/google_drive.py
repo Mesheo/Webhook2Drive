@@ -6,11 +6,13 @@ from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload, MediaIoBaseDownload
 import os
 import pandas as pd
+import gspread
 
 def authentication_process():
     print("[google_drive] - Iniciando Autenticação com Google Cloud")
 
-    SCOPES = ["https://www.googleapis.com/auth/drive"]
+    SCOPES = ["https://www.googleapis.com/auth/drive",
+              "https://www.googleapis.com/auth/spreadsheets"]
 
     creds = None
 
@@ -85,7 +87,6 @@ def drive_uploader(form_name, csv_file_path):
         else:
             print(f"[google_drive] - Pasta {folder_name} já existe!")
             target_folder_id = response['files'][0]['id']
-        print("Target Folder id: ", target_folder_id)
 
         #Verificando se ja tem um csv do formulario dentro pasta
         result = service.files().list(
@@ -130,3 +131,12 @@ def drive_uploader(form_name, csv_file_path):
 
     except HttpError as e:
         print("Error: ", str(e))
+
+def spread_sheet_operations():
+    creds =authentication_process()
+    client = gspread.authorize(creds)
+
+    sheet_id = "1mQmoCsZViLMNqTuHZEAub0wawW67VlaJkk2ocAc88yQ"
+    sheet = client.open_by_key(sheet_id)
+    values_list = sheet["High Net-Worth Individual"].row_values(1)
+    return values_list
