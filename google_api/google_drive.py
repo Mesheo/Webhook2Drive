@@ -138,5 +138,6 @@ def spread_sheet_operations():
 
     sheet_id = "1mQmoCsZViLMNqTuHZEAub0wawW67VlaJkk2ocAc88yQ"
     sheet = client.open_by_key(sheet_id)
+    print("[spred_sheet_operations] - Peguei a sheet? ", sheet)
     values_list = sheet["High Net-Worth Individual"].row_values(1)
     return values_list

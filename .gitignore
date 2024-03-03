@@ -6,3 +6,5 @@ google_api/token.json
 serverless_sdk/
 /.serverless
 .serverless
+/venv
+venv/
