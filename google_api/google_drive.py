@@ -8,11 +8,10 @@ import os
 import pandas as pd
 import gspread
 
-def authentication_process():
+def authentication_drive_process():
     print("[google_drive] - Iniciando Autenticação com Google Cloud")
 
-    SCOPES = ["https://www.googleapis.com/auth/drive",
-              "https://www.googleapis.com/auth/spreadsheets"]
+    SCOPES = ["https://www.googleapis.com/auth/drive"]
 
     creds = None
 
@@ -56,7 +55,7 @@ def merge_csv_files(original_file, new_file, merged_file):
     print(f"Arquivos CSV mesclados com sucesso. Arquivo salvo como '{merged_file}'.")
 
 def drive_uploader(form_name, csv_file_path):
-    creds = authentication_process()
+    creds = authentication_drive_process()
 
     target_folder_id = ''
     try:
@@ -132,12 +131,45 @@ def drive_uploader(form_name, csv_file_path):
     except HttpError as e:
         print("Error: ", str(e))
 
+
+def authentication_sheets_process():
+    creds = None
+
+    SCOPES = ["https://www.googleapis.com/auth/drive"]
+        # The file token.json stores the user's access and refresh tokens, and is
+    # created automatically when the authorization flow completes for the first
+    # time.
+    if os.path.exists("google_api/token.json"):
+        creds = Credentials.from_authorized_user_file("google_api/token.json", SCOPES)
+    if not creds or not creds.valid:
+        if creds and creds.expired and creds.refresh_token:
+            creds.refresh(Request())
+        else:
+            flow = InstalledAppFlow.from_client_secrets_file(
+                "google_api/google_sheets_credentials.json", SCOPES
+            )
+        creds = flow.run_local_server(port=0)
+        # Save the credentials for the next run
+    with open("token.json", "w") as token:
+      token.write(creds.to_json())
+      
+    return creds
+
+
+
 def spread_sheet_operations():
-    creds =authentication_process()
+    creds =authentication_sheets_process()
     client = gspread.authorize(creds)
 
-    sheet_id = "1mQmoCsZViLMNqTuHZEAub0wawW67VlaJkk2ocAc88yQ"
-    sheet = client.open_by_key(sheet_id)
-    print("[spred_sheet_operations] - Peguei a sheet? ", sheet)
-    values_list = sheet["High Net-Worth Individual"].row_values(1)
-    return values_list
+    valvet_forms_sheet_id = "1mQmoCsZViLMNqTuHZEAub0wawW67VlaJkk2ocAc88yQ"
+    sheet = client.open_by_key(valvet_forms_sheet_id)
+
+    #Listando as paginas dentro de um sheets
+    worksheet_list = sheet.worksheets()
+    print("\nspread_sheet_operations - Currently worksheets inside the sheet: \n", worksheet_list)
+
+    #Selecionando uma em especifico
+    high_net_worth_individual = sheet.worksheet("High Net-Worth Individual")
+    print("\nspread_sheet_operations - First worksheet header: ", high_net_worth_individual.row_values(1))
+
+    return worksheet_list

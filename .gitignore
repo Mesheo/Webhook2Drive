@@ -1,10 +1,14 @@
 node_modules/
 serverless/
 package-lock.json/
-google_api/credentials.json
-google_api/token.json
 serverless_sdk/
 /.serverless
 .serverless
 /venv
 venv/
+/__pycache__
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
