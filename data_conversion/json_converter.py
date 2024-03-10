@@ -36,6 +36,7 @@ def format_data(data, form_name):
             "First Name": data.get("First name", ""),
             "Last Name": data.get("Last name", ""),
             "Email": data.get("Email", ""),
+            "Company Name": data.get("Company Name", ""),
             "Country of Company": data.get("", ""),
             "AUM": data.get("AUM", ""),
             "Lead Interests": data.get("Lead Interests", ""),
@@ -69,6 +70,7 @@ def format_bulk_data(data, form_name):
     if form_name in ["independent_financial_advisor", "familly_office", "wealth_manager"]:
         for item in data:
             formatted_item = {
+                'created_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                 "First name": item.get("first name", ""),
                 "Last name": item.get("last name", ""),
                 "Email": item.get("email", ""),
@@ -82,6 +84,7 @@ def format_bulk_data(data, form_name):
     elif form_name in "contact":
         for item in data:
             formatted_item = {
+                'created_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                 "": item.get("", ""),
                 "Firstname": item.get("firstname", ""),
                 "Last name": item.get("last name", ""),
@@ -93,6 +96,7 @@ def format_bulk_data(data, form_name):
     elif form_name in "high_net_worth_individual":
         for item in data:
             formatted_item = {
+                'created_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                 "First name": item.get("first name", ""),
                 "Last name": item.get("last name", ""),
                 "Email": item.get("email", ""),
