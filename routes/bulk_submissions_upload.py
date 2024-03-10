@@ -17,7 +17,7 @@ def bulk_submissions(form_name):
 
 
 
-    values_list = spread_sheet_operations(formatted_data)
+    values_list = spread_sheet_operations(formatted_data, form_name)
     response = {
         'message': values_list,
         'status': 200

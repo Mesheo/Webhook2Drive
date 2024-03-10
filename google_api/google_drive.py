@@ -137,8 +137,8 @@ def authentication_sheets_process():
 
     SCOPES = ["https://www.googleapis.com/auth/drive"]
        
-    if os.path.exists("google_api/token.json"):
-        creds = Credentials.from_authorized_user_file("google_api/token.json", SCOPES)
+    if os.path.exists("google_api/google_sheets_token.json"):
+        creds = Credentials.from_authorized_user_file("google_api/google_sheets_token.json", SCOPES)
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
@@ -146,7 +146,7 @@ def authentication_sheets_process():
             flow = InstalledAppFlow.from_client_secrets_file(
                 "google_api/google_sheets_credentials.json", SCOPES
             )
-        creds = flow.run_local_server(port=0)
+            creds = flow.run_local_server(port=0)
 
     with open("google_api/google_sheets_token.json", "w") as token:
       token.write(creds.to_json())
@@ -154,25 +154,24 @@ def authentication_sheets_process():
     return creds
 
 
-def spread_sheet_operations(formatted_data):
+def spread_sheet_operations(formatted_data, form_name):
     print("[\nspread_sheet_operations] - Dados a serem inseridos: ", formatted_data)
     print("[spread_sheet_operations] - TIPO dos Dados a serem inseridos: ", type(formatted_data))
 
-    df = pd.DataFrame([formatted_data])
-    print("[\nspread_sheet_operations] - Dataframe dos dados: ", df)
+    dataframe = pd.DataFrame([formatted_data])
+    print("[\nspread_sheet_operations] - Dataframe dos dados: ", dataframe)
+
 
     creds = authentication_sheets_process()
     client = gspread.authorize(creds)
 
     valvet_forms_sheet_id = "1mQmoCsZViLMNqTuHZEAub0wawW67VlaJkk2ocAc88yQ"
     sheet = client.open_by_key(valvet_forms_sheet_id)
-
-    #Listando as paginas dentro de um sheets
+  
     worksheet_list = sheet.worksheets()
-    print("\nspread_sheet_operations - Currently worksheets inside the sheet: \n", worksheet_list)
+    print("\n[spread_sheet_operations] - Currently worksheets inside the sheet: \n", worksheet_list)
 
-    #Selecionando uma em especifico
-    high_net_worth_individual = sheet.worksheet("High Net-Worth Individual")
-    print("\nspread_sheet_operations - First worksheet header: ", high_net_worth_individual.row_values(1))
+    form_worksheet = sheet.worksheet(form_name)
+    form_worksheet.append_row(dataframe.values.tolist()[0])
 
-    return worksheet_list
+    return form_worksheet.get_all_records()
