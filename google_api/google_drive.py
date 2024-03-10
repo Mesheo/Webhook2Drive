@@ -136,9 +136,7 @@ def authentication_sheets_process():
     creds = None
 
     SCOPES = ["https://www.googleapis.com/auth/drive"]
-        # The file token.json stores the user's access and refresh tokens, and is
-    # created automatically when the authorization flow completes for the first
-    # time.
+       
     if os.path.exists("google_api/token.json"):
         creds = Credentials.from_authorized_user_file("google_api/token.json", SCOPES)
     if not creds or not creds.valid:
@@ -149,16 +147,21 @@ def authentication_sheets_process():
                 "google_api/google_sheets_credentials.json", SCOPES
             )
         creds = flow.run_local_server(port=0)
-        # Save the credentials for the next run
-    with open("token.json", "w") as token:
+
+    with open("google_api/google_sheets_token.json", "w") as token:
       token.write(creds.to_json())
       
     return creds
 
 
+def spread_sheet_operations(formatted_data):
+    print("[\nspread_sheet_operations] - Dados a serem inseridos: ", formatted_data)
+    print("[spread_sheet_operations] - TIPO dos Dados a serem inseridos: ", type(formatted_data))
 
-def spread_sheet_operations():
-    creds =authentication_sheets_process()
+    df = pd.DataFrame([formatted_data])
+    print("[\nspread_sheet_operations] - Dataframe dos dados: ", df)
+
+    creds = authentication_sheets_process()
     client = gspread.authorize(creds)
 
     valvet_forms_sheet_id = "1mQmoCsZViLMNqTuHZEAub0wawW67VlaJkk2ocAc88yQ"

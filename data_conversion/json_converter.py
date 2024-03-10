@@ -32,8 +32,8 @@ def json2csv(data):
     print("[json_converter] - Conteúdo do CSV em dataframe: ", df)
 
     return csv_file_path
-
-def format_data(data, form_name):
+ 
+def format_data(data, form_name=None):
     formatted_data = {'created_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
 
     if form_name in ["independent_financial_advisor", "familly_office", "wealth_manager"]:
