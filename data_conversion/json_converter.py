@@ -28,7 +28,7 @@ def json2csv(data):
 
     return csv_file_path
  
-def format_data(data, form_name=None):
+def format_data(data, form_name):
     formatted_data = {'created_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
 
     if form_name in ["independent_financial_advisor", "familly_office", "wealth_manager"]:
@@ -61,4 +61,45 @@ def format_data(data, form_name=None):
         })
     
     print("[format_data] - Dados normalizados: ", formatted_data)
+    return formatted_data
+
+def format_bulk_data(data, form_name):
+    formatted_data = []
+
+    if form_name in ["independent_financial_advisor", "familly_office", "wealth_manager"]:
+        for item in data:
+            formatted_item = {
+                "First name": item.get("first name", ""),
+                "Last name": item.get("last name", ""),
+                "Email": item.get("email", ""),
+                "Company Name": item.get("company name", ""),
+                "": item.get("", ""),
+                "AUM": item.get("aum", ""),
+                "Lead Interests": item.get("lead interests", "")
+            }
+            formatted_data.append(formatted_item)
+
+    elif form_name in "contact":
+        for item in data:
+            formatted_item = {
+                "": item.get("", ""),
+                "Firstname": item.get("firstname", ""),
+                "Last name": item.get("last name", ""),
+                "email": item.get("email", ""),
+                "Message": item.get("message", "")
+            }
+            formatted_data.append(formatted_item)
+
+    elif form_name in "high_net_worth_individual":
+        for item in data:
+            formatted_item = {
+                "First name": item.get("first name", ""),
+                "Last name": item.get("last name", ""),
+                "Email": item.get("email", ""),
+                "Assets": item.get("assets", ""),
+                "Country": item.get("country", ""),
+                "Accredited Investor": item.get("accredited investor", "")
+            }
+            formatted_data.append(formatted_item)
+            
     return formatted_data
