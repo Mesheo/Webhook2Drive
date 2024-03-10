@@ -155,21 +155,13 @@ def authentication_sheets_process():
 
 
 def spread_sheet_operations(formatted_data, form_name):
-    print("[\nspread_sheet_operations] - Dados a serem inseridos: ", formatted_data)
-    print("[spread_sheet_operations] - TIPO dos Dados a serem inseridos: ", type(formatted_data))
-
     dataframe = pd.DataFrame([formatted_data])
-    print("[\nspread_sheet_operations] - Dataframe dos dados: ", dataframe)
-
 
     creds = authentication_sheets_process()
     client = gspread.authorize(creds)
 
     valvet_forms_sheet_id = "1mQmoCsZViLMNqTuHZEAub0wawW67VlaJkk2ocAc88yQ"
     sheet = client.open_by_key(valvet_forms_sheet_id)
-  
-    worksheet_list = sheet.worksheets()
-    print("\n[spread_sheet_operations] - Currently worksheets inside the sheet: \n", worksheet_list)
 
     form_worksheet = sheet.worksheet(form_name)
     form_worksheet.append_row(dataframe.values.tolist()[0])
