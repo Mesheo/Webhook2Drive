@@ -7,7 +7,7 @@ from data_conversion.json_converter import format_data
 webhook2sheets_app = Blueprint("webhook2sheets", __name__)
 
 @webhook2sheets_app.route("/webhook/<form_name>", methods=["POST"], strict_slashes=False)
-def bulk_submissions(form_name):
+def single_submissions(form_name):
 
     if not request.is_json:
         return make_response(jsonify(error='Invalid JSON'), 400)
