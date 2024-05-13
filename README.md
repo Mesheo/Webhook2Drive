@@ -11,6 +11,7 @@ Required to deploy our application to the cloud platform of our choice, in this 
   - `serverless plugin install -n serverless-wsgi`
   - `serverless config credentials --provider aws --key YOUR_KEY --secret YOUR_SECRET` (if you dont have your Keys go to the **Next Topic**)
   - More complete instalation Tutorial: https://www.serverless.com/framework/docs/getting-started
+  - `sls login` and you are good to go!
 
 ### **Google Cloud and AWS Credentials**
 Google Cloud credentials are required to populate the credentials.json file, enabling Google API usage. AWS credentials are necessary for the serverless-cli to obtain all the required permissions to deploy the infrastructure to your AWS account.
