@@ -1,131 +1,35 @@
-<!--
-title: 'Serverless Framework Python Flask API on AWS'
-description: 'This template demonstrates how to develop and deploy a simple Python Flask API running on AWS Lambda using the traditional Serverless Framework.'
-layout: Doc
-framework: v3
-platform: AWS
-language: Python
-priority: 2
-authorLink: 'https://github.com/serverless'
-authorName: 'Serverless, inc.'
-authorAvatar: 'https://avatars1.githubusercontent.com/u/13742415?s=200&v=4'
--->
+# Description
 
-# Serverless Framework Python Flask API on AWS
+This project's objective is to integrate web forms on your website with Google Sheets within your Google Drive account. This integration facilitates a user-friendly approach to managing received data compared to traditional database querying methods. 
+By automatically populating form submissions into a Google Sheet, it offers the possibility for **non-technical people to manage the acquired data**
 
-This template demonstrates how to develop and deploy a simple Python Flask API service running on AWS Lambda using the traditional Serverless Framework.
+# Quickstart setup  
+### Serverless
+Required to deploy our application to the cloud platform of our choice, in this case, its helping us to deploy the project inside AWS.
+- **Serverless framework**: `sudo npm i -g serverless`
+- serverless config credentials --provider aws --key YOUR_KEY --secret YOUR_SECRET (if you dont have your cred Keys go to [Google Cloud and AWS credentials](google-cloud-and-aws-credentials)
+- More complete instalation Tutorial: https://www.serverless.com/framework/docs/getting-started
 
-
-## Anatomy of the template
-
-This template configures a single function, `api`, which is responsible for handling all incoming requests thanks to configured `httpApi` events. To learn more about `httpApi` event configuration options, please refer to [httpApi event docs](https://www.serverless.com/framework/docs/providers/aws/events/http-api/). As the events are configured in a way to accept all incoming requests, `Flask` framework is responsible for routing and handling requests internally. The implementation takes advantage of `serverless-wsgi`, which allows you to wrap WSGI applications such as Flask apps. To learn more about `serverless-wsgi`, please refer to corresponding [GitHub repository](https://github.com/logandk/serverless-wsgi). Additionally, the template relies on `serverless-python-requirements` plugin for packaging dependencies from `requirements.txt` file. For more details about `serverless-python-requirements` configuration, please refer to corresponding [GitHub repository](https://github.com/UnitedIncome/serverless-python-requirements).
-
-## Usage
-
-### Prerequisites
-
-In order to package your dependencies locally with `serverless-python-requirements`, you need to have `Python3.9` installed locally. You can create and activate a dedicated virtual environment with the following command:
-
-```bash
-python3.9 -m venv ./venv
-source ./venv/bin/activate
-```
-
-Alternatively, you can also use `dockerizePip` configuration from `serverless-python-requirements`. For details on that, please refer to corresponding [GitHub repository](https://github.com/UnitedIncome/serverless-python-requirements).
-
-### Deployment
-
-This example is made to work with the Serverless Framework dashboard, which includes advanced features such as CI/CD, monitoring, metrics, etc.
-
-In order to deploy with dashboard, you need to first login with:
-
-```
-serverless login
-```
-
-install dependencies with:
-
-```
-npm install
-```
-
-and
-
-```
-pip install -r requirements.txt
-```
-
-and then perform deployment with:
-
-```
-serverless deploy
-```
-
-After running deploy, you should see output similar to:
-
-```bash
-Deploying aws-python-flask-api-project to stage dev (us-east-1)
-
-✔ Service deployed to stack aws-python-flask-api-project-dev (182s)
-
-endpoint: ANY - https://xxxxxxxx.execute-api.us-east-1.amazonaws.com
-functions:
-  api: aws-python-flask-api-project-dev-api (1.5 MB)
-```
-
-_Note_: In current form, after deployment, your API is public and can be invoked by anyone. For production deployments, you might want to configure an authorizer. For details on how to do that, refer to [httpApi event docs](https://www.serverless.com/framework/docs/providers/aws/events/http-api/).
-
-### Invocation
-
-After successful deployment, you can call the created application via HTTP:
-
-```bash
-curl https://xxxxxxx.execute-api.us-east-1.amazonaws.com/dev/
-```
-
-Which should result in the following response:
-
-```
-{"message":"Hello from root!"}
-```
-
-Calling the `/hello` path with:
-
-```bash
-curl https://xxxxxxx.execute-api.us-east-1.amazonaws.com/dev/hello
-```
-
-Should result in the following response:
-
-```bash
-{"message":"Hello from path!"}
-```
-
-If you try to invoke a path or method that does not have a configured handler, e.g. with:
-
-```bash
-curl https://xxxxxxx.execute-api.us-east-1.amazonaws.com/dev/nonexistent
-```
-
-You should receive the following response:
-
-```bash
-{"error":"Not Found!"}
-```
-
-### Local development
-
-Thanks to capabilities of `serverless-wsgi`, it is also possible to run your application locally, however, in order to do that, you will need to first install `werkzeug` dependency, as well as all other dependencies listed in `requirements.txt`. It is recommended to use a dedicated virtual environment for that purpose. You can install all needed dependencies with the following commands:
-
-```bash
-pip install werkzeug
-pip install -r requirements.txt
-```
-
-At this point, you can run your application locally with the following command:
-
-```bash
-serverless wsgi serve
-```
-
-For additional local development capabilities of `serverless-wsgi` plugin, please refer to corresponding [GitHub repository](https://github.com/logandk/serverless-wsgi).
+### **Google Cloud and AWS Credentials**
+Google Cloud credentials are required to populate the credentials.json file, enabling Google API usage. AWS credentials are necessary for the serverless-cli to obtain all the required permissions to deploy the infrastructure to your AWS account.
+- **Google API Credentials**: just go to [this page](https://developers.google.com/drive/api/quickstart/python?hl=pt_BR) -> Enable API -> select your project and follow the steps
+- **AWS credentials**:
+  - Put these commands on your terminal: `sudo apt install awscli` then `aws configure`
+  - Go to *AWS IAM console* -> *Security credentials* -> *Access keys* -> Create access key -> store the keys on the file opened by the `aws configure` command
+### Python
+The project was coded using python language so it's necessary to have **Python** and its dependency manager **PIP** installed on your machine.
+- **Python**: https://pip.pypa.io/en/stable/installation/
+- **PIP**: https://pip.pypa.io/en/stable/installation/
+- **How to Create a Virtual Environment?**
+For Python-based services, it's recommended to create a virtual environment for isolated dependency installation.
+    ```bash
+    > pip install virtualenv
+    > virtualenv environment_name
+    > source environment_name/bin/activate
+    # Use the **deactivate** command to exit the venv
+    ```
+----
+## Useful commands:
+* `sls deploy` - to deploy your application to your cloud account
+* `sls logs`- to see the recently logs of the lambda
+* `serverless deploy function -f functionName` - to deploy only the changes on your function (more efficient when u didnt change the infraestructure)
