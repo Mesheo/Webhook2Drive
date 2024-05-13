@@ -7,7 +7,8 @@ By automatically populating form submissions into a Google Sheet, it offers the 
 ### Serverless
 Required to deploy our application to the cloud platform of our choice, in this case, its helping us to deploy the project inside AWS.
 - **Serverless framework**: 
-  - `sudo npm i -g serverless`
+  - `npm i -g serverless`
+  - `serverless plugin install -n serverless-wsgi`
   - `serverless config credentials --provider aws --key YOUR_KEY --secret YOUR_SECRET` (if you dont have your Keys go to the **Next Topic**)
   - More complete instalation Tutorial: https://www.serverless.com/framework/docs/getting-started
 
