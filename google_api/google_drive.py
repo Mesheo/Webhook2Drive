@@ -6,7 +6,6 @@ import pandas as pd
 import gspread
 
     
-    
 def authentication_sheets_process():
     creds = None
 
