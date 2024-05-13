@@ -33,6 +33,7 @@ For Python-based services, it's recommended to create a virtual environment for 
     ```
 ----
 ## Useful commands:
+* `sls info` - to see endpoints and other stats of your Lambda Function
 * `sls deploy` - to deploy your application to your cloud account
 * `sls logs`- to see the recently logs of the lambda
 * `serverless deploy function -f functionName` - to deploy only the changes on your function (more efficient when u didnt change the infraestructure)
