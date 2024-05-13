@@ -6,9 +6,10 @@ By automatically populating form submissions into a Google Sheet, it offers the 
 # Quickstart setup  
 ### Serverless
 Required to deploy our application to the cloud platform of our choice, in this case, its helping us to deploy the project inside AWS.
-- **Serverless framework**: `sudo npm i -g serverless`
-- serverless config credentials --provider aws --key YOUR_KEY --secret YOUR_SECRET (if you dont have your cred Keys go to [Google Cloud and AWS credentials](google-cloud-and-aws-credentials)
-- More complete instalation Tutorial: https://www.serverless.com/framework/docs/getting-started
+- **Serverless framework**: 
+  - `sudo npm i -g serverless`
+  - `serverless config credentials --provider aws --key YOUR_KEY --secret YOUR_SECRET` (if you dont have your Keys go to the **Next Topic**)
+  - More complete instalation Tutorial: https://www.serverless.com/framework/docs/getting-started
 
 ### **Google Cloud and AWS Credentials**
 Google Cloud credentials are required to populate the credentials.json file, enabling Google API usage. AWS credentials are necessary for the serverless-cli to obtain all the required permissions to deploy the infrastructure to your AWS account.
